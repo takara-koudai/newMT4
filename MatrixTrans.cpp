@@ -144,8 +144,7 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	return result;
 }
 
-void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label) 
-{
+void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label) {
 	Novice::ScreenPrintf(x, y - 20, label);
 	for (int row = 0; row < 4; ++row) {
 		for (int column = 0; column < 4; ++column) {
