@@ -1,12 +1,16 @@
 #include "MatrixTrans.h"
 #include <cmath>
 #include <Novice.h>
+#include <cassert>
 
 // ‰ÁŽZ
-Matrix4 Add(const Matrix4& m1, const Matrix4& m2) {
+Matrix4 Add(const Matrix4& m1, const Matrix4& m2) 
+{
 	Matrix4 result;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
+	for (int i = 0; i < 4; i++) 
+	{
+		for (int j = 0; j < 4; j++) 
+		{
 			result.m[i][j] = m1.m[i][j] + m2.m[i][j];
 		}
 	}
@@ -14,8 +18,20 @@ Matrix4 Add(const Matrix4& m1, const Matrix4& m2) {
 	return result;
 };
 
+// Ï
+Vector3 Multiply(const Vector3& v1, const Vector3& v2) 
+{
+	Vector3 result{
+		(v1.x * v2.x) + (v1.y * v2.x) + (v1.z * v2.x),
+		(v1.x * v2.y) + (v1.y * v2.y) + (v1.z * v2.y),
+		(v1.x * v2.z) + (v1.y * v2.z) + (v1.z * v2.z)
+	};
+	return result;
+};
+
 // ƒXƒJƒ‰[”{
-Vector3 Multiply(const Vector3& v1, float scale) {
+Vector3 Multiply(const Vector3& v1, float scale) 
+{
 	Vector3 result;
 	result.x = v1.x * scale;
 	result.y = v1.y * scale;
@@ -24,10 +40,13 @@ Vector3 Multiply(const Vector3& v1, float scale) {
 }
 
 // ƒXƒJƒ‰[”{
-Matrix4 Multiply(Matrix4 m, float scale) {
+Matrix4 Multiply(Matrix4 m, float scale)
+{
 	Matrix4 result;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
+	for (int i = 0; i < 4; i++) 
+	{
+		for (int j = 0; j < 4; j++) 
+		{
 			result.m[i][j] = m.m[i][j] * scale;
 		}
 	}
@@ -35,7 +54,8 @@ Matrix4 Multiply(Matrix4 m, float scale) {
 	return result;
 }
 
-Matrix4 Multiply(const Matrix4& m1, const Matrix4& m2) {
+Matrix4 Multiply(const Matrix4& m1, const Matrix4& m2) 
+{
 	Matrix4 result{};
 	result.m[0][0] = m1.m[0][0] * m2.m[0][0] + m1.m[0][1] * m2.m[1][0] + m1.m[0][2] * m2.m[2][0] +
 		m1.m[0][3] * m2.m[3][0];
@@ -78,14 +98,16 @@ Matrix4 Multiply(const Matrix4& m1, const Matrix4& m2) {
 
 
 // ’·‚³(ƒmƒ‹ƒ€)
-float Length(const Vector3& v) {
+float Length(const Vector3& v) 
+{
 	float result;
 	result = sqrt(Dot(v, v));
 	return result;
 }
 
 // ³‹K‰»
-Vector3 Normalize(const Vector3& v) {
+Vector3 Normalize(const Vector3& v) 
+{
 	Vector3 result{};
 	float length = Length(v);
 	if (length != 0.0f) {
@@ -97,19 +119,23 @@ Vector3 Normalize(const Vector3& v) {
 }
 
 // “àÏ
-float Dot(const Vector3& v1, const Vector3& v2) {
+float Dot(const Vector3& v1, const Vector3& v2) 
+{
 	float result;
 	result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	return result;
 }
 
-Vector3 Cross(const Vector3& v1, const Vector3& v2) {
+Vector3 Cross(const Vector3& v1, const Vector3& v2) 
+{
 	return { v1.y * v2.z - v1.z * v2.y,v1.z * v2.x - v1.x * v2.z,v1.x * v2.y - v1.y * v2.x };
 }
 
-Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
+Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) 
+{
 	// Šg‘åk¬
-	Matrix4 matS[2] = {
+	Matrix4 matS[2] = 
+	{
 		{cosf(angle),0,0,0,
 		0,cosf(angle),0,0,
 		0,0,cosf(angle),0,
@@ -121,7 +147,8 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 		0,0,0,1},
 	};
 	// ŽË‰e
-	Matrix4 matP = {
+	Matrix4 matP = 
+	{
 		axis.x * axis.x, axis.x * axis.y, axis.x * axis.z,0,
 		axis.x * axis.y, axis.y * axis.y, axis.y * axis.z,0,
 		axis.x * axis.z, axis.y * axis.z, axis.z * axis.z,0,
@@ -136,6 +163,7 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 		-axis.y,axis.x,0 , 0,
 		0,0,0,1
 	};
+
 	matC = Multiply(matC, -sinf(angle));
 
 	Matrix4 result = Add(matS[0], Add(matP, matC));
@@ -144,11 +172,71 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	return result;
 }
 
-void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label) {
+void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label) 
+{
 	Novice::ScreenPrintf(x, y - 20, label);
-	for (int row = 0; row < 4; ++row) {
+	for (int row = 0; row < 4; ++row) 
+	{
 		for (int column = 0; column < 4; ++column) {
 			Novice::ScreenPrintf(x + column * 60, y + row * 20, "%6.03f", matrix.m[row][column]);
 		}
 	}
+}
+
+Matrix4 DirectionToDirection(const Vector3& from, const Vector3& to) 
+{
+	// ³‹K‰»
+	Vector3 n;
+	// ^‹t‚ÌƒxƒNƒgƒ‹‚©‚ðƒ`ƒFƒbƒN
+	float dotFrom2to = Dot(from, to);
+	// ³‹K‰»
+	n = Normalize(Cross(from, to));
+
+	// ^‹t‚È‚ç”½“]
+	if (dotFrom2to == -1) {
+		n = { n.y, -n.x, 0 };
+	}
+
+	//float cos = Dot(from, to);
+	//float sin = Length(Cross(from, to));
+
+	Vector3 cross = Cross(from, to);
+	float cos = Dot(from, to);
+	float sin = Length(cross);
+
+	float epsilon = 1e-6f;
+	Vector3 axis;
+	if (std::abs(cos + 1.0f) <= epsilon)
+	{
+		if (std::abs(from.x) > epsilon || std::abs(from.y) > epsilon)
+		{
+			axis.x = from.y;
+			axis.y = -from.x;
+			axis.z = 0.0f;
+		}
+		else if (std::abs(from.x) > epsilon || std::abs(from.z) > epsilon)
+		{
+			axis.x = from.z;
+			axis.y = 0.0f;
+			axis.z = -from.x;
+		}
+		else
+		{
+			assert(false);
+		}
+		axis = Normalize(axis);
+	}
+	else
+	{
+		axis = Normalize(cross);
+	}
+
+	Matrix4 result = {
+		axis.x * axis.x * (1 - cos) + cos, axis.x * axis.y * (1 - cos) + axis.z * sin, axis.x * axis.z * (1 - cos) - axis.y * sin,0,
+		axis.x * axis.y * (1 - cos) - axis.z * sin, axis.y * axis.y * (1 - cos) + cos,axis.y * axis.z * (1 - cos) + axis.x * sin,0,
+		axis.x * axis.z * (1 - cos) + axis.y * sin, axis.y * axis.z * (1 - cos) - axis.x * sin, axis.z * axis.z * (1 - cos) + cos,0,
+		0,0,0,1
+	};
+
+	return result;
 }
