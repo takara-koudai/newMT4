@@ -33,7 +33,7 @@ float Dot(const Vector3& v1, const Vector3& v2);
 Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
 // ³Ë‰eƒxƒNƒgƒ‹
-//Vector3 Project(const Vector3& v1, const Vector3& v2);
+Vector3 Project(const Vector3& v1, const Vector3& v2);
 
 // ”CˆÓ²‰ñ“]s—ñ
 Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle);
@@ -41,4 +41,3 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label);
 
 Matrix4 DirectionToDirection(const Vector3& from, const Vector3& to);
-

@@ -9,8 +9,7 @@ Matrix4 Add(const Matrix4& m1, const Matrix4& m2)
 	Matrix4 result;
 	for (int i = 0; i < 4; i++) 
 	{
-		for (int j = 0; j < 4; j++) 
-		{
+		for (int j = 0; j < 4; j++) {
 			result.m[i][j] = m1.m[i][j] + m2.m[i][j];
 		}
 	}
@@ -40,13 +39,12 @@ Vector3 Multiply(const Vector3& v1, float scale)
 }
 
 // ƒXƒJƒ‰[”{
-Matrix4 Multiply(Matrix4 m, float scale)
+Matrix4 Multiply(Matrix4 m, float scale) 
 {
 	Matrix4 result;
 	for (int i = 0; i < 4; i++) 
 	{
-		for (int j = 0; j < 4; j++) 
-		{
+		for (int j = 0; j < 4; j++) {
 			result.m[i][j] = m.m[i][j] * scale;
 		}
 	}
@@ -134,8 +132,7 @@ Vector3 Cross(const Vector3& v1, const Vector3& v2)
 Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle) 
 {
 	// Šg‘åk¬
-	Matrix4 matS[2] = 
-	{
+	Matrix4 matS[2] = {
 		{cosf(angle),0,0,0,
 		0,cosf(angle),0,0,
 		0,0,cosf(angle),0,
@@ -146,9 +143,9 @@ Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 		0,0,1 - cosf(angle),0,
 		0,0,0,1},
 	};
-	// ŽË‰e
-	Matrix4 matP = 
-	{
+
+	// 
+	Matrix4 matP = {
 		axis.x * axis.x, axis.x * axis.y, axis.x * axis.z,0,
 		axis.x * axis.y, axis.y * axis.y, axis.y * axis.z,0,
 		axis.x * axis.z, axis.y * axis.z, axis.z * axis.z,0,
@@ -177,7 +174,8 @@ void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label)
 	Novice::ScreenPrintf(x, y - 20, label);
 	for (int row = 0; row < 4; ++row) 
 	{
-		for (int column = 0; column < 4; ++column) {
+		for (int column = 0; column < 4; ++column) 
+		{
 			Novice::ScreenPrintf(x + column * 60, y + row * 20, "%6.03f", matrix.m[row][column]);
 		}
 	}
@@ -185,54 +183,41 @@ void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label)
 
 Matrix4 DirectionToDirection(const Vector3& from, const Vector3& to) 
 {
-	// ³‹K‰»
-	Vector3 n;
-	// ^‹t‚ÌƒxƒNƒgƒ‹‚©‚ðƒ`ƒFƒbƒN
-	float dotFrom2to = Dot(from, to);
-	// ³‹K‰»
-	n = Normalize(Cross(from, to));
-
-	// ^‹t‚È‚ç”½“]
-	if (dotFrom2to == -1) {
-		n = { n.y, -n.x, 0 };
-	}
-
-	//float cos = Dot(from, to);
-	//float sin = Length(Cross(from, to));
 
 	Vector3 cross = Cross(from, to);
 	float cos = Dot(from, to);
-	float sin = Length(cross);
+	float sin = Length(Cross(from, to));
 
 	float epsilon = 1e-6f;
 	Vector3 axis;
-	if (std::abs(cos + 1.0f) <= epsilon)
+	if (std::abs(cos + 1.0f) <= epsilon) 
 	{
-		if (std::abs(from.x) > epsilon || std::abs(from.y) > epsilon)
+		if (std::abs(from.x) > epsilon || std::abs(from.y) > epsilon) 
 		{
 			axis.x = from.y;
 			axis.y = -from.x;
 			axis.z = 0.0f;
 		}
-		else if (std::abs(from.x) > epsilon || std::abs(from.z) > epsilon)
+		else if (std::abs(from.x) > epsilon || std::abs(from.z) > epsilon) 
 		{
 			axis.x = from.z;
 			axis.y = 0.0f;
-			axis.z = -from.x;
+			axis.z = -from.z;
 		}
-		else
+		else 
 		{
 			assert(false);
 		}
+
 		axis = Normalize(axis);
 	}
-	else
+	else 
 	{
 		axis = Normalize(cross);
 	}
 
 	Matrix4 result = {
-		axis.x * axis.x * (1 - cos) + cos, axis.x * axis.y * (1 - cos) + axis.z * sin, axis.x * axis.z * (1 - cos) - axis.y * sin,0,
+		axis.x * axis.x * (1 - cos) + cos,axis.x * axis.y * (1 - cos) + axis.z * sin, axis.x * axis.z * (1 - cos) - axis.y * sin,0,
 		axis.x * axis.y * (1 - cos) - axis.z * sin, axis.y * axis.y * (1 - cos) + cos,axis.y * axis.z * (1 - cos) + axis.x * sin,0,
 		axis.x * axis.z * (1 - cos) + axis.y * sin, axis.y * axis.z * (1 - cos) - axis.x * sin, axis.z * axis.z * (1 - cos) + cos,0,
 		0,0,0,1
