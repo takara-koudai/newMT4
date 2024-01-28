@@ -32,12 +32,19 @@ float Dot(const Vector3& v1, const Vector3& v2);
 
 Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
+Vector3 Transform(const Vector3& vector, const Matrix4& matrix);
+
 // 正射影ベクトル
 Vector3 Project(const Vector3& v1, const Vector3& v2);
 
 // 任意軸回転行列
 Matrix4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 
-void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label);
-
 Matrix4 DirectionToDirection(const Vector3& from, const Vector3& to);
+
+const int kRowHeight = 20;
+const int kColumnWidth = 60;
+// 4x4行列の数値表示
+void MatrixScreenPrintf(int x, int y, const Matrix4& matrix, const char* label);
+// 三次元ベクトルの数値表示
+void VectorScreenPrintf(int x, int y, const Vector3& vector, const char* label);

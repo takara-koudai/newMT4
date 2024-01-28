@@ -18,15 +18,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char keys[256] = {0};
 	char preKeys[256] = {0};
 
-	Quaternion p1 = { 2.0f,3.0f,4.0f,1.0f };
-	Quaternion p2 = { 1.0f,3.0f,5.0f,2.0f };
-	Quaternion identity = IdentituQuaternion();
-	Quaternion conj = Conjugate(p1);
-	Quaternion inv = Inverse(p1);
-	Quaternion normal = Normalize(p1);
-	Quaternion mul1 = Multiply(p1, p2);
-	Quaternion mul2 = Multiply(p2, p1);
-	float norm = Norm(p1);
+	Quaternion rotation = MakeRotateAxisAngleQuaternion(Normalize(Vector3{ 1.0f,0.4f,-0.2f }), 0.45f);
+	Vector3 pointY = { 2.1f, -0.9f, 1.3f };
+	Matrix4 rotateMatrix = MakeRotateMatrix(rotation);
+	Vector3 rotateByQuaternion = RotateVector(pointY, rotation);
+	Vector3 rotateByMatrix = Transform(pointY, rotateMatrix);
+
 
 
 	// ウィンドウの×ボタンが押されるまでループ
@@ -52,7 +49,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		
+		QuaternionScreenPrintf(0, kRowHeight * 0, rotation, "   : rotation");
+		MatrixScreenPrintf(0, kRowHeight * 2, rotateMatrix, "rotateMatrix");
+		VectorScreenPrintf(0, kRowHeight * 6, rotateByQuaternion, "   : rotateByQuaternion");
+		VectorScreenPrintf(0, kRowHeight * 7, rotateByMatrix, "   : rotateByMatrix");
 
 		
 		///
