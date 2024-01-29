@@ -29,6 +29,8 @@ Vector3 RotateVector(const Vector3& vector, Quaternion quaternion);
 // Quaternionから回転行列を求める
 Matrix4 MakeRotateMatrix(const Quaternion& quaternion);
 
+// 球面線形補間
+Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+
 // Quaternionの数値表示
 void QuaternionScreenPrintf(int x, int y, const Quaternion& quaternion, const char* label);
-

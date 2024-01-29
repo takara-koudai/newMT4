@@ -117,6 +117,28 @@ Matrix4 MakeRotateMatrix(const Quaternion& quaternion) {
 	return result;
 }
 
+Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t) {
+	Quaternion quaternion0 = q0;
+	float dot = Dot(Vector3{ q0.x, q0.y, q0.z }, Vector3{ q1.x, q1.y, q1.z });
+	if (dot < 0) {
+		quaternion0 = Quaternion{ -q0.x, -q0.y, -q0.z ,-q0.w };
+		dot = -dot;
+	}
+	// ‚È‚·Šp‚ð‹‚ß‚é
+	float theta = std::acos(dot);
+	float scale0 = sinf((1 - t) * theta) / sin(theta);
+	float scale1 = sin(t * theta) / sin(theta);
+
+	Quaternion result = {
+		scale0 * quaternion0.x + scale1 * q1.x,
+		scale0 * quaternion0.y + scale1 * q1.y,
+		scale0 * quaternion0.z + scale1 * q1.z,
+		scale0 * quaternion0.w + scale1 * q1.w
+	};
+
+	return result;
+}
+
 void QuaternionScreenPrintf(int x, int y, const Quaternion& quaternion, const char* label) {
 	Novice::ScreenPrintf(x, y, "%.02f", quaternion.x);
 	Novice::ScreenPrintf(x + kColumnWidth, y, "%.02f", quaternion.y);
